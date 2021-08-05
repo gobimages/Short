@@ -44,18 +44,27 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         return func.HttpResponse(json.dumps(Getmyitems.items), status_code=200)
         
     if name and req.method == 'POST' and not vanity:
-        
-        #upn = jsonObj['upn']
-        task = Entity()
-        task.PartitionKey = 'ODSCode'
-        url= short_url.encode_url(int(uuid.uuid4()))[:6]
-        task.RowKey = str(url)
-        task.CreatedDate = Today
-        task.LongURL = req.params.get('name')
-        task.Username = upn
-        task.ShortURL = domain+url
-        table_service.insert_entity('Shortner', task)
-        return func.HttpResponse(f"{domain+url}")
+        Checkurl = req.params.get('name')
+        api = "a635b902d307181320ed0d4b604f365c2de73b40279b5e64a74c5341fe6b576a"
+        response = requests.post('https://www.virustotal.com/api/v3/urls', headers={'x-apikey': f'{api}'}, data={'url': f'{Checkurl}'})
+        gobi = response.json()
+        id = gobi['data']['id']
+        output = requests.get(f'https://www.virustotal.com/api/v3/analyses/{id}', headers={'x-apikey': f'{api}'})
+        result = output.json()['data']['attributes']['stats']['harmless']
+        if int(result) < int(70):
+            #upn = jsonObj['upn']
+            task = Entity()
+            task.PartitionKey = 'ODSCode'
+            url= short_url.encode_url(int(uuid.uuid4()))[:6]
+            task.RowKey = str(url)
+            task.CreatedDate = Today
+            task.LongURL = req.params.get('name')
+            task.Username = upn
+            task.ShortURL = domain+url
+            table_service.insert_entity('Shortner', task)
+            return func.HttpResponse(f"{domain+url}")
+        else:
+            return func.HttpResponse("URL was found to be Malicious")
     if name and vanity and req.method == 'POST':
         try:
             vanvalue = table_service.query_entities('Shortner', filter=f"RowKey eq '{vanity}'")
@@ -77,13 +86,3 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
              "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response.",
              status_code=200
         )
-
-import requests
-aurl = 'www.google.com'
-api = "a635b902d307181320ed0d4b604f365c2de73b40279b5e64a74c5341fe6b576a"
-response = requests.post('https://www.virustotal.com/api/v3/urls', headers={'x-apikey': f'{api}'}, data={'url': f'{aurl}'})
-gobi = response.json()
-id = gobi['data']['id']
-
-output = requests.get(f'https://www.virustotal.com/api/v3/analyses/{id}', headers={'x-apikey': f'{api}'})
-output.json()['data']['attributes']['stats']
