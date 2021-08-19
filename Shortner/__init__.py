@@ -10,7 +10,7 @@ from azure.cosmosdb.table.models import Entity
 import azure.functions as func
 import requests
 domain = 'http://localhost:7071/api/Redirect/'
-the_connection_string = "DefaultEndpointsProtocol=https;AccountName=shortner;AccountKey=h74uGbZ4Ud37C0Wo5wAvM5ZIhsSGCcAVKXtMoGkOp6fjJ3emGAm5Wzn1PRJ79g2uK09Es9bAXPib7G1kWqxzFA==;TableEndpoint=https://shortner.table.cosmos.azure.com:443/;"
+the_connection_string = "DefaultEndpointsProtocol=https;AccountName=shortner;AccountKey=afWLw3WdSmkhVqbLT0gJ4P6oTbq2njGNghi12D4wtF26eayFZqFYF3cy8qW4L9TOmeiPLurV61OBclCwAoGdPg==;TableEndpoint=https://shortner.table.cosmos.azure.com:443/;"
 table_service = TableService(endpoint_suffix = "table.cosmos.azure.com", connection_string= the_connection_string)
 #table_service = TableService(account_name='shortner', account_key='WnJudA0n088k8u8wyHtvBV8rrgs4CHwp9avKEVnWFERIruu7gumgj4Dfqa0ICvLWv7WA2S3Fb7NWqUzRTKsogw==')
 #three_months = parser.isoparse((datetime.now() + relativedelta(months=-1))) 
