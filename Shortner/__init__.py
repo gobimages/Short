@@ -10,7 +10,7 @@ from azure.cosmosdb.table.models import Entity
 import azure.functions as func
 import requests
 domain = 'http://localhost:7071/api/Redirect/'
-the_connection_string = "DefaultEndpointsProtocol=https;AccountName=shortnerdb;AccountKey=d1KAgDimYreZpcphtCQdKCw1ap92S8zorji01Za9rmzGzYME40npH0rBeSF1UDq7B4cvDxuIrK8YVgkjZ69QTg==;TableEndpoint=https://shortnerdb.table.cosmos.azure.com:443/;"
+the_connection_string = "DefaultEndpointsProtocol=https;AccountName=shortner;AccountKey=h74uGbZ4Ud37C0Wo5wAvM5ZIhsSGCcAVKXtMoGkOp6fjJ3emGAm5Wzn1PRJ79g2uK09Es9bAXPib7G1kWqxzFA==;TableEndpoint=https://shortner.table.cosmos.azure.com:443/;"
 table_service = TableService(endpoint_suffix = "table.cosmos.azure.com", connection_string= the_connection_string)
 #table_service = TableService(account_name='shortner', account_key='WnJudA0n088k8u8wyHtvBV8rrgs4CHwp9avKEVnWFERIruu7gumgj4Dfqa0ICvLWv7WA2S3Fb7NWqUzRTKsogw==')
 #three_months = parser.isoparse((datetime.now() + relativedelta(months=-1))) 
@@ -51,7 +51,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         id = gobi['data']['id']
         output = requests.get(f'https://www.virustotal.com/api/v3/analyses/{id}', headers={'x-apikey': f'{api}'})
         result = output.json()['data']['attributes']['stats']['harmless']
-        if int(result) < int(70):
+        if int(result) < int(90):
             #upn = jsonObj['upn']
             task = Entity()
             task.PartitionKey = 'ODSCode'
