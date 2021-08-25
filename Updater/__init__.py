@@ -1,12 +1,11 @@
 import logging
-from azure.cosmosdb.table.tableservice import TableService
-from azure.cosmosdb.table.models import Entity
 from datetime import datetime
 import json
 import azure.functions as func
-the_connection_string = "DefaultEndpointsProtocol=https;AccountName=shortner;AccountKey=afWLw3WdSmkhVqbLT0gJ4P6oTbq2njGNghi12D4wtF26eayFZqFYF3cy8qW4L9TOmeiPLurV61OBclCwAoGdPg==;TableEndpoint=https://shortner.table.cosmos.azure.com:443/;"
-table_service = TableService(endpoint_suffix = "table.cosmos.azure.com", connection_string= the_connection_string)
-
+from Storage import GetStorage
+# the_connection_string = "DefaultEndpointsProtocol=https;AccountName=shortner;AccountKey=afWLw3WdSmkhVqbLT0gJ4P6oTbq2njGNghi12D4wtF26eayFZqFYF3cy8qW4L9TOmeiPLurV61OBclCwAoGdPg==;TableEndpoint=https://shortner.table.cosmos.azure.com:443/;"
+# table_service = TableService(endpoint_suffix = "table.cosmos.azure.com", connection_string= the_connection_string)
+table_service = GetStorage()
 def main(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('Python HTTP trigger function processed a request.')
     #table_service = TableService(account_name='shortner', account_key='WnJudA0n088k8u8wyHtvBV8rrgs4CHwp9avKEVnWFERIruu7gumgj4Dfqa0ICvLWv7WA2S3Fb7NWqUzRTKsogw==')
